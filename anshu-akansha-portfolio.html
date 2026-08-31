@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anshu Akansha — Senior Software Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-900:#0A1922;
+    --navy-800:#11242F;
+    --navy-700:#1A3542;
+    --navy-600:#294a58;
+    --paper:#E9F1F1;
+    --slate:#8CA8AF;
+    --slate-dim:#5f7d84;
+    --cyan:#6FD3C8;
+    --amber:#E3A65B;
+    --line: rgba(233,241,241,0.14);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--navy-900);
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 42px 42px;
+    color:var(--paper);
+    font-family:'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--cyan); color:var(--navy-900); }
+  a{ color:inherit; }
+  .wrap{
+    max-width: 980px;
+    margin:0 auto;
+    padding: 0 28px;
+  }
+  h1,h2,h3{ font-family:'Space Grotesk', sans-serif; margin:0; letter-spacing:-0.01em; }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+
+  /* ---- top nav / coordinate strip ---- */
+  .coord-strip{
+    display:flex; justify-content:space-between; align-items:center;
+    padding: 18px 28px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--slate-dim);
+    border-bottom: 1px solid var(--navy-700);
+    position: sticky; top:0; z-index: 20;
+    background: rgba(10,25,34,0.86);
+    backdrop-filter: blur(6px);
+  }
+  .coord-strip .id{ color: var(--cyan); }
+  .coord-strip nav a{ text-decoration:none; color:var(--slate); margin-left:20px; font-size:12.5px; }
+  .coord-strip nav a:hover{ color:var(--paper); }
+
+  section{ position:relative; padding: 88px 0; border-bottom:1px solid var(--navy-700); }
+  section:last-of-type{ border-bottom:none; }
+
+  .tag-corner{
+    position:absolute; width:14px; height:14px;
+    border-color: var(--navy-600); border-style: solid; border-width:0;
+  }
+  .section-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:44px; }
+  .section-head .num{ font-family:'IBM Plex Mono', monospace; color:var(--cyan); font-size:13px; }
+  .section-head h2{ font-size: 26px; font-weight:600; }
+  .section-head .rule{ flex:1; height:1px; background:var(--navy-700); }
+
+  /* ---- hero ---- */
+  header.hero{ padding-top: 64px; padding-bottom: 40px; border-bottom:1px solid var(--navy-700); }
+  .hero-top{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:40px; align-items:flex-start; }
+  .hero-title{ max-width:560px; }
+  .hero-title .role{ font-family:'IBM Plex Mono', monospace; color:var(--amber); font-size:13px; margin-bottom:14px; display:block; }
+  .hero-title h1{ font-size: 44px; line-height:1.12; font-weight:700; }
+  .hero-title p{ color:var(--slate); font-size:16px; line-height:1.65; margin-top:20px; max-width:520px; }
+  .hero-contact{ font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--slate); text-align:right; line-height:2.1; }
+  .hero-contact a{ text-decoration:none; border-bottom:1px solid var(--navy-600); padding-bottom:1px; }
+  .hero-contact a:hover{ border-color:var(--cyan); color:var(--cyan); }
+
+  .diagram-wrap{ margin-top: 56px; }
+  .diagram-caption{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--slate-dim); margin-top:10px; }
+  svg text{ font-family:'IBM Plex Mono', monospace; }
+  .node rect{ fill: var(--navy-800); stroke: var(--navy-600); stroke-width:1; }
+  .node.lead rect{ stroke: var(--cyan); }
+  .node text.label{ fill: var(--paper); font-size:11px; }
+  .node text.sub{ fill: var(--slate-dim); font-size:9px; }
+  .edge{ stroke: var(--navy-600); stroke-width:1; fill:none; }
+  .edge.active{ stroke: var(--cyan); stroke-dasharray: 4 4; stroke-dashoffset:0; animation: dash 2.6s linear infinite; }
+  @keyframes dash{ to{ stroke-dashoffset: -80; } }
+  .pulse{ fill: var(--cyan); opacity:0.9; }
+
+  /* ---- metrics ---- */
+  .metrics{ display:grid; grid-template-columns: repeat(4,1fr); gap:0; border:1px solid var(--navy-700); }
+  .metric{ padding:26px 22px; border-right:1px solid var(--navy-700); }
+  .metric:last-child{ border-right:none; }
+  .metric .val{ font-family:'Space Grotesk', sans-serif; font-size:32px; font-weight:700; color:var(--cyan); }
+  .metric .lbl{ font-size:12.5px; color:var(--slate); margin-top:8px; line-height:1.5; }
+
+  /* ---- experience ---- */
+  .role-block{ display:grid; grid-template-columns: 190px 1fr; gap:32px; padding:32px 0; border-top:1px solid var(--navy-700); }
+  .role-block:first-of-type{ border-top:none; }
+  .role-meta{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--slate-dim); }
+  .role-meta .dates{ color:var(--amber); margin-bottom:8px; }
+  .role-main h3{ font-size:19px; font-weight:600; }
+  .role-main .org{ color:var(--cyan); font-size:14px; margin-top:4px; font-family:'IBM Plex Mono', monospace; }
+  .role-main ul{ margin:16px 0 0; padding-left:18px; color:var(--slate); font-size:14.5px; line-height:1.7; }
+  .role-main ul li{ margin-bottom:8px; }
+  .role-main ul li b{ color:var(--paper); font-weight:600; }
+  .promo-line{ font-size:12.5px; color:var(--slate-dim); margin-top:10px; font-family:'IBM Plex Mono', monospace; }
+
+  /* ---- stack ---- */
+  .stack-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background:var(--navy-700); border:1px solid var(--navy-700); }
+  .stack-cell{ background:var(--navy-900); padding:24px 26px; }
+  .stack-cell h4{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--amber); margin-bottom:14px; font-weight:500; }
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--paper); border:1px solid var(--navy-600); padding:5px 10px; }
+
+  /* ---- project ---- */
+  .project{ border:1px solid var(--navy-700); padding:32px; }
+  .project-head{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; align-items:baseline; margin-bottom:16px;}
+  .project-head h3{ font-size:19px; font-weight:600; }
+  .project-head .stack{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--slate-dim); }
+  .project p{ color:var(--slate); font-size:14.5px; line-height:1.7; margin: 6px 0; }
+
+  /* ---- achievements ---- */
+  .ach-list{ list-style:none; margin:0; padding:0; display:grid; gap:14px; }
+  .ach-list li{ display:flex; gap:14px; align-items:flex-start; font-size:14.5px; color:var(--slate); }
+  .ach-list li::before{ content:"◆"; color:var(--cyan); font-size:10px; margin-top:5px; }
+  .ach-list li b{ color:var(--paper); }
+
+  /* ---- footer ---- */
+  footer{ padding: 56px 0 70px; }
+  footer .foot-grid{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:24px; }
+  footer h2{ font-size:26px; max-width:420px; line-height:1.3; }
+  footer .foot-links{ font-family:'IBM Plex Mono', monospace; font-size:13.5px; line-height:2.3; text-align:right; }
+  footer .foot-links a{ text-decoration:none; border-bottom:1px solid var(--navy-600); }
+  footer .foot-links a:hover{ color:var(--cyan); border-color:var(--cyan); }
+  .foot-note{ margin-top:60px; font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--slate-dim); }
+
+  @media (max-width: 760px){
+    .coord-strip nav{ display:none; }
+    .hero-title h1{ font-size:32px; }
+    .hero-contact{ text-align:left; }
+    .hero-top{ flex-direction:column; }
+    .metrics{ grid-template-columns: repeat(2,1fr); }
+    .metric{ border-bottom:1px solid var(--navy-700); }
+    .role-block{ grid-template-columns: 1fr; gap:10px; }
+    .stack-grid{ grid-template-columns: 1fr; }
+    footer .foot-grid{ flex-direction:column; }
+    footer .foot-links{ text-align:left; }
+  }
+</style>
+</head>
+<body>
+
+<div class="coord-strip">
+  <span><span class="id">AA·2026</span> / backend systems</span>
+  <nav>
+    <a href="#experience">experience</a>
+    <a href="#stack">stack</a>
+    <a href="#work">work</a>
+    <a href="#contact">contact</a>
+  </nav>
+</div>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="hero-top">
+      <div class="hero-title">
+        <span class="role">Senior Software Engineer — Backend Systems</span>
+        <h1>Anshu Akansha</h1>
+        <p>Five years architecting Java/Spring Boot microservices and event-driven, ERP-integrated backend platforms. Leads a five-engineer team building the backend for a warehouse management system in production for 200,000+ users.</p>
+      </div>
+      <div class="hero-contact">
+        Noida, India<br>
+        <a href="mailto:anshuakansha2210@gmail.com">anshuakansha2210@gmail.com</a><br>
+        <a href="tel:+917355328540">+91 73553 28540</a><br>
+        <a href="#">linkedin.com/in/anshuakansha</a><br>
+        <a href="#">github.com/anshuakansha</a>
+      </div>
+    </div>
+
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 920 260" width="100%" height="auto" role="img" aria-label="Diagram of the WMS backend architecture Anshu leads">
+        <!-- edges -->
+        <path class="edge active" d="M95,130 H185"/>
+        <path class="edge active" d="M285,130 H375"/>
+        <path class="edge active" d="M475,130 H565"/>
+        <path class="edge active" d="M665,90 H720 M665,90 V130" />
+        <path class="edge active" d="M665,170 H720 M665,170 V130" />
+        <path class="edge" d="M375,130 V60 H285 V90"/>
+        <path class="edge" d="M375,130 V200 H285 V170"/>
+        <path class="edge" d="M565,130 V60 H475 V90"/>
+
+        <!-- nodes -->
+        <g class="node">
+          <rect x="10" y="105" width="85" height="50" rx="2"/>
+          <text class="label" x="52" y="127" text-anchor="middle">Client</text>
+          <text class="sub" x="52" y="141" text-anchor="middle">web / mobile</text>
+        </g>
+
+        <g class="node lead">
+          <rect x="185" y="105" width="100" height="50" rx="2"/>
+          <text class="label" x="235" y="127" text-anchor="middle">auth-lib</text>
+          <text class="sub" x="235" y="141" text-anchor="middle">JWT · OAuth2</text>
+        </g>
+
+        <g class="node">
+          <rect x="285" y="35" width="90" height="46" rx="2"/>
+          <text class="label" x="330" y="55" text-anchor="middle">Redis</text>
+          <text class="sub" x="330" y="68" text-anchor="middle">session cache</text>
+        </g>
+        <g class="node">
+          <rect x="285" y="177" width="90" height="46" rx="2"/>
+          <text class="label" x="330" y="197" text-anchor="middle">Elasticsearch</text>
+          <text class="sub" x="330" y="210" text-anchor="middle">search / logs</text>
+        </g>
+
+        <g class="node lead">
+          <rect x="375" y="105" width="100" height="50" rx="2"/>
+          <text class="label" x="425" y="123" text-anchor="middle">WMS Master API</text>
+          <text class="sub" x="425" y="139" text-anchor="middle">20+ domain entities</text>
+        </g>
+
+        <g class="node">
+          <rect x="475" y="35" width="90" height="46" rx="2"/>
+          <text class="label" x="520" y="55" text-anchor="middle">New Relic</text>
+          <text class="sub" x="520" y="68" text-anchor="middle">APM</text>
+        </g>
+
+        <g class="node lead">
+          <rect x="565" y="105" width="100" height="50" rx="2"/>
+          <text class="label" x="615" y="123" text-anchor="middle">Transaction Mod.</text>
+          <text class="sub" x="615" y="139" text-anchor="middle">Kafka · STOMP</text>
+        </g>
+
+        <g class="node">
+          <rect x="720" y="65" width="100" height="50" rx="2"/>
+          <text class="label" x="770" y="87" text-anchor="middle">ERP Connector</text>
+          <text class="sub" x="770" y="101" text-anchor="middle">SPI · strategy</text>
+        </g>
+        <g class="node">
+          <rect x="720" y="145" width="100" height="50" rx="2"/>
+          <text class="label" x="770" y="167" text-anchor="middle">SAP / eMPro</text>
+          <text class="sub" x="770" y="181" text-anchor="middle">swap by profile</text>
+        </g>
+
+        <circle class="pulse" r="3">
+          <animateMotion dur="4.5s" repeatCount="indefinite"
+            path="M10,130 H185 H375 H565 H720" />
+        </circle>
+      </svg>
+      <div class="diagram-caption">// simplified view of the WMS request path — components Anshu designed or leads shown in outline</div>
+    </div>
+  </header>
+
+  <section>
+    <div class="metrics">
+      <div class="metric"><div class="val">200K+</div><div class="lbl">global users served by the WMS platform he leads</div></div>
+      <div class="metric"><div class="val">60%</div><div class="lbl">less infrastructure boilerplate after the shared Maven BOM</div></div>
+      <div class="metric"><div class="val">70%</div><div class="lbl">faster debugging with the self-serve log-retrieval tool</div></div>
+      <div class="metric"><div class="val">45%</div><div class="lbl">lower authorization latency after the auth-lib rebuild</div></div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="section-head"><span class="num">01</span><h2>Experience</h2><div class="rule"></div></div>
+
+    <div class="role-block">
+      <div class="role-meta">
+        <div class="dates">Aug 2025 — Present</div>
+        Motherson Technology<br>Services Limited
+      </div>
+      <div class="role-main">
+        <h3>Warehouse Management System</h3>
+        <div class="org">team lead, backend</div>
+        <ul>
+          <li>Leads a five-engineer backend team owning the WMS platform end to end — architecture decisions, code review, sprint planning, and mentorship — for a system serving <b>200,000+ global users</b>.</li>
+          <li>Architected a Maven BOM of <b>18 shared Java modules</b> (Spring Boot, Kafka, Redis, Elasticsearch, JWT) reused across 10+ microservices, cutting infrastructure boilerplate by <b>60%</b>.</li>
+          <li>Designed a pluggable ERP Connector framework (Java ServiceLoader SPI, Strategy Pattern) letting SAP and eMPro backends swap via build profile with zero-downtime deployments.</li>
+          <li>Built <b>auth-lib</b> on Spring Security JWT + OAuth2 Resource Server with multi-tenant datasource resolution, cutting authorization latency by <b>45%</b> across all microservices.</li>
+          <li>Led the WMS Master API across 20+ domain entities and a 15+ service Transaction Module (GRN receiving, ERP-synced MRS generation, ZPL thermal printing); built event-driven workflows with Kafka and WebSocket/STOMP, integrating New Relic APM, Elasticsearch, and AWS SNS to cut troubleshooting time by <b>50%</b>.</li>
+        </ul>
+        <div class="promo-line">Promoted to Senior Software Engineer, July 2026 — Software Engineer since Sept 2021</div>
+      </div>
+    </div>
+
+    <div class="role-block">
+      <div class="role-meta">
+        <div class="dates">Jan 2022 — Jul 2025</div>
+        Motherson Technology<br>Services Limited
+      </div>
+      <div class="role-main">
+        <h3>Legal One</h3>
+        <div class="org">compliance platform</div>
+        <ul>
+          <li>Designed RESTful APIs (Spring Boot, Spring MVC, JPA/Hibernate) with query optimization on SQL Server, improving backend response performance by <b>30%</b> for 20,000+ global users.</li>
+          <li>Built the Insider Trade Management module full-stack (Angular + Spring Boot/JPA) with rule-based validation and audit-trail logging to enforce strict compliance.</li>
+          <li>Developed a multilingual HR compliance platform (Angular i18n, Spring Boot/JPA) adopted by 1,000+ users.</li>
+          <li>Built a Java/Spring Boot log-retrieval tool with an Angular admin dashboard for self-serve production diagnostics, cutting debugging time by <b>70%</b>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="role-block">
+      <div class="role-meta">
+        <div class="dates">Dec 2019 — Jul 2020</div>
+        Protrainy &amp; Ooency
+      </div>
+      <div class="role-main">
+        <h3>Software Engineer Intern</h3>
+        <div class="org">PHP · Laravel · MySQL</div>
+        <ul>
+          <li>Engineered backend platforms, payment gateways, and admin portals supporting 2,500+ active users and 500+ monthly transactions, cutting dev cycles by <b>20%</b>.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="stack">
+    <div class="section-head"><span class="num">02</span><h2>Stack</h2><div class="rule"></div></div>
+    <div class="stack-grid">
+      <div class="stack-cell">
+        <h4>backend</h4>
+        <div class="chips">
+          <span class="chip">Java 8/17</span><span class="chip">Spring Boot</span><span class="chip">Spring Security</span>
+          <span class="chip">JPA / Hibernate</span><span class="chip">Microservices</span><span class="chip">REST APIs</span>
+          <span class="chip">Apache Kafka</span><span class="chip">JWT / OAuth2</span><span class="chip">Multithreading</span>
+          <span class="chip">Design Patterns</span><span class="chip">JUnit</span>
+        </div>
+      </div>
+      <div class="stack-cell">
+        <h4>frontend</h4>
+        <div class="chips">
+          <span class="chip">Angular</span><span class="chip">React</span><span class="chip">TypeScript</span>
+          <span class="chip">RxJS</span><span class="chip">HTML / CSS</span>
+        </div>
+      </div>
+      <div class="stack-cell">
+        <h4>data &amp; messaging</h4>
+        <div class="chips">
+          <span class="chip">SQL Server</span><span class="chip">MySQL</span><span class="chip">Azure SQL</span>
+          <span class="chip">Oracle DB</span><span class="chip">Redis</span><span class="chip">Elasticsearch</span>
+        </div>
+      </div>
+      <div class="stack-cell">
+        <h4>cloud &amp; devops</h4>
+        <div class="chips">
+          <span class="chip">Azure</span><span class="chip">AWS</span><span class="chip">Docker</span>
+          <span class="chip">Kubernetes</span><span class="chip">CI/CD</span><span class="chip">Git</span><span class="chip">New Relic APM</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="section-head"><span class="num">03</span><h2>Featured build</h2><div class="rule"></div></div>
+    <div class="project">
+      <div class="project-head">
+        <h3>RCS Seat Booking Platform — Smart India Hackathon</h3>
+        <span class="stack mono">Java · Spring Boot · Angular · MySQL · SMTP</span>
+      </div>
+      <p>Full-stack REST backend with an Angular dashboard to digitize subsidized RCS airline seat allocation, with real-time seat search and live inventory updates.</p>
+      <p>Automated eligibility-verification pipeline with SMTP email confirmations and ID-upload validation, cutting manual application review effort by <b style="color:var(--paper)">80%</b>.</p>
+      <p style="color:var(--amber); font-size:13px; margin-top:16px;">Runner-up — organized by the Ministry of Education's Innovation Cell &amp; AICTE, Feb 2019</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><span class="num">04</span><h2>Achievements &amp; education</h2><div class="rule"></div></div>
+    <ul class="ach-list">
+      <li><b>Outstanding Performer of the Year</b> — Motherson Technology Services (2026)</li>
+      <li><b>LeetCode 100-day coding challenge</b> — completed</li>
+      <li><b>B.Tech, Electronics &amp; Communication Engineering</b> — Indian Institute of Information Technology, Una, Himachal Pradesh (2017 – 2021)</li>
+    </ul>
+  </section>
+
+  <footer id="contact">
+    <div class="foot-grid">
+      <h2>Open to senior backend and full-stack roles.</h2>
+      <div class="foot-links">
+        <a href="mailto:anshuakansha2210@gmail.com">anshuakansha2210@gmail.com</a><br>
+        <a href="tel:+917355328540">+91 73553 28540</a><br>
+        <a href="#">LinkedIn ↗</a><br>
+        <a href="#">GitHub ↗</a>
+      </div>
+    </div>
+    <div class="foot-note">Noida, India — built from resume, Aug 2026</div>
+  </footer>
+</div>
+
+</body>
+</html>
